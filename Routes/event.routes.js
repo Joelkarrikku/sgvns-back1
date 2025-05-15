@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require('../middlewares/upload.middleware');
 const verifyAdmin = require('../middlewares/admin.middleware');
 const Event = require('../models/event.model');  // ✅ Corrected here
-
+//const authController = require('../../Controllers/auth.controller');
 // Public: Get all events
 router.get('/', async (req, res) => {
     try {

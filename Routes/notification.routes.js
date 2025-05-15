@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require('../middlewares/upload.middleware');
 const verifyAdmin = require('../middlewares/admin.middleware');
 const Notification =require('../models/notification.model');
-
+//const authController = require('../../Controllers/auth.controller');
 // Public: Get all notifications
 router.get('/', async (req, res) => {
     try {

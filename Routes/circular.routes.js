@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require('../middlewares/upload.middleware');
 const verifyAdmin = require('../middlewares/admin.middleware');
 const Circular = require('../models/circular.model');
-
+//const authController = require('../../Controllers/auth.controller');
 // Public: Get all circulars
 router.get('/', async (req, res) => {
     try {
