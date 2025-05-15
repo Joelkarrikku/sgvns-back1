@@ -1,4 +1,5 @@
-const Circular = require('../Models/circular.model');
+const Circular = require('../models/circular.model');
+
 
 exports.createCircular = async (req, res) => {
   try {
