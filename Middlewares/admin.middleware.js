@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');  // ✅ This is fine, your file is User.js
+const User = require('../models/user');  // ✅ This is fine, your file is User.js
 
 module.exports = async (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
