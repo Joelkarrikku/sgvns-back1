@@ -1,8 +1,8 @@
 {
     "info": {
-        "name": "School Management Backend API Collection",
-        "_postman_id": "school-management-sample-collection",
-        "description": "Postman Collection for testing School Management APIs",
+        "name": "School Management Backend API",
+        "_postman_id": "school-management-backend-api",
+        "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, Events.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -34,7 +34,30 @@
             }
         },
         {
-            "name": "Get Circulars (Public)",
+            "name": "Auth - Get Admin Profile (Verify Token)",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{jwt_token}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/auth/profile",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "auth",
+                        "profile"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Circulars - Get Circulars (Public)",
             "request": {
                 "method": "GET",
                 "url": {
@@ -50,7 +73,7 @@
             }
         },
         {
-            "name": "Create Circular (Admin)",
+            "name": "Circulars - Create Circular (Admin)",
             "request": {
                 "method": "POST",
                 "header": [
@@ -78,7 +101,7 @@
                     "formdata": [
                         {
                             "key": "title",
-                            "value": "Test Circular",
+                            "value": "Test Circular Title",
                             "type": "text"
                         },
                         {
@@ -88,14 +111,15 @@
                         },
                         {
                             "key": "file",
-                            "type": "file"
+                            "type": "file",
+                            "src": ""
                         }
                     ]
                 }
             }
         },
         {
-            "name": "Get Notifications (Public)",
+            "name": "Notifications - Get Notifications (Public)",
             "request": {
                 "method": "GET",
                 "url": {
@@ -111,7 +135,7 @@
             }
         },
         {
-            "name": "Create Notification (Admin)",
+            "name": "Notifications - Create Notification (Admin)",
             "request": {
                 "method": "POST",
                 "header": [
@@ -139,7 +163,7 @@
                     "formdata": [
                         {
                             "key": "title",
-                            "value": "Test Notification",
+                            "value": "Test Notification Title",
                             "type": "text"
                         },
                         {
@@ -149,14 +173,15 @@
                         },
                         {
                             "key": "attachment",
-                            "type": "file"
+                            "type": "file",
+                            "src": ""
                         }
                     ]
                 }
             }
         },
         {
-            "name": "Get Events (Public)",
+            "name": "Events - Get Events (Public)",
             "request": {
                 "method": "GET",
                 "url": {
@@ -172,7 +197,7 @@
             }
         },
         {
-            "name": "Create Event (Admin)",
+            "name": "Events - Create Event (Admin)",
             "request": {
                 "method": "POST",
                 "header": [
@@ -200,7 +225,7 @@
                     "formdata": [
                         {
                             "key": "title",
-                            "value": "Test Event",
+                            "value": "Test Event Title",
                             "type": "text"
                         },
                         {
@@ -210,7 +235,8 @@
                         },
                         {
                             "key": "file",
-                            "type": "file"
+                            "type": "file",
+                            "src": ""
                         }
                     ]
                 }
