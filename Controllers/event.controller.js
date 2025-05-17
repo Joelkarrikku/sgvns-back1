@@ -1,43 +1,42 @@
 const Event = require('../models/event.model');
 
+// Create event (Admin only)
 exports.createEvent = async (req, res) => {
   try {
-    const { title, description, eventDate, location } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
-    const event = new Event({ title, description, eventDate, location, imageUrl });
+    const { title, description, date } = req.body;
+    const file = req.file ? req.file.filename : null;
+
+    const event = new Event({ title, description, date, file });
     await event.save();
-    res.status(201).json(event);
+
+    res.status(201).json({
+      success: true,
+      message: 'Event created successfully',
+      data: event,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Create Event Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };
 
-exports.getAllEvents = async (req, res) => {
+// Get all events (Public)
+exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find().sort({ eventDate: 1 });
-    res.json(events);
+    const events = await Event.find().sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      message: 'Events fetched successfully',
+      data: events,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
-exports.getEventById = async (req, res) => {
-  try {
-    const event = await Event.findById(req.params.id);
-    if (!event) return res.status(404).json({ message: 'Event not found' });
-    res.json(event);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
-exports.getUpcomingEvents = async (req, res) => {
-  try {
-    const today = new Date();
-    const events = await Event.find({ eventDate: { $gte: today } }).sort({ eventDate: 1 });
-
-    res.status(200).json(events);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Get Events Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };

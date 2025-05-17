@@ -1,28 +1,25 @@
 const multer = require('multer');
 const path = require('path');
 
-// Storage configuration
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, 'uploads/');
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
+    cb(null, uniqueName);
+  },
 });
 
-// File filter (images + pdf + doc/docx)
 const fileFilter = (req, file, cb) => {
-  const ext = path.extname(file.originalname).toLowerCase();
-  if (
-    ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx'].includes(ext)
-  ) {
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+  if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Only images, PDFs, DOC, DOCX are allowed'));
+    cb(new Error('Invalid file type. Only PDF, JPG, and PNG are allowed.'), false);
   }
 };
 
 const upload = multer({ storage, fileFilter });
 
-module.exports = upload;
+module.exports = upload.single('file');

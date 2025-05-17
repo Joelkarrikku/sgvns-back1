@@ -1,39 +1,40 @@
 const Notification = require('../models/notification.model');
 
+// Create notification (Admin only)
 exports.createNotification = async (req, res) => {
   try {
-    const { title, message, audience } = req.body;
-    const notification = new Notification({ title, message, audience });
+    const { title, message } = req.body;
+    const notification = new Notification({ title, message });
     await notification.save();
-    res.status(201).json(notification);
+
+    res.status(201).json({
+      success: true,
+      message: 'Notification created successfully',
+      data: notification,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Create Notification Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };
 
-exports.getAllNotifications = async (req, res) => {
+// Get all notifications (Public)
+exports.getNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find().sort({ createdAt: -1 });
-    res.json(notifications);
+    res.status(200).json({
+      success: true,
+      message: 'Notifications fetched successfully',
+      data: notifications,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
-
-exports.markAsRead = async (req, res) => {
-  try {
-    const notificationId = req.params.id;
-    const notification = await Notification.findById(notificationId);
-
-    if (!notification) {
-      return res.status(404).json({ message: 'Notification not found' });
-    }
-
-    notification.status = 'Read';
-    await notification.save();
-
-    res.status(200).json({ message: 'Notification marked as read', notification });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Get Notifications Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };
