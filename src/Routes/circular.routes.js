@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../Middlewares/upload.middleware');
-const Circular = require('../Models/circular.model'); // ✅ Added this line
+const Circular = require('../models/circular.model'); // ✅ Added this line
 const { verifyToken, verifyRole } = require('../Middlewares/auth.middleware');
 // POST route to upload a circular
 router.post('/upload', verifyToken, verifyRole('Admin'), upload.single('file'), async (req, res) => {
