@@ -1,256 +1,256 @@
 {
-    "info": {
-        "name": "School Management Backend API",
-        "_postman_id": "school-management-backend-api",
-        "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, Events.",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  "info": {
+    "name": "School Management Backend API",
+    "_postman_id": "school-management-backend-api",
+    "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, Events.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}"
+        }
+      }
     },
-    "item": [
-        {
-            "name": "Auth - Login (Admin)",
-            "request": {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                    }
-                ],
-                "url": {
-                    "raw": "{{base_url}}/api/auth/login",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "auth",
-                        "login"
-                    ]
-                },
-                "body": {
-                    "mode": "raw",
-                    "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}"
-                }
-            }
-        },
-        {
-            "name": "Auth - Get Admin Profile (Verify Token)",
-            "request": {
-                "method": "GET",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer {{jwt_token}}"
-                    }
-                ],
-                "url": {
-                    "raw": "{{base_url}}/api/auth/profile",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "auth",
-                        "profile"
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Circulars - Get Circulars (Public)",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "{{base_url}}/api/circulars",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "circulars"
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Circulars - Create Circular (Admin)",
-            "request": {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer {{jwt_token}}"
-                    },
-                    {
-                        "key": "Content-Type",
-                        "value": "multipart/form-data"
-                    }
-                ],
-                "url": {
-                    "raw": "{{base_url}}/api/circulars",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "circulars"
-                    ]
-                },
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "title",
-                            "value": "Test Circular Title",
-                            "type": "text"
-                        },
-                        {
-                            "key": "description",
-                            "value": "Sample circular description",
-                            "type": "text"
-                        },
-                        {
-                            "key": "file",
-                            "type": "file",
-                            "src": ""
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Notifications - Get Notifications (Public)",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "{{base_url}}/api/notifications",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "notifications"
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Notifications - Create Notification (Admin)",
-            "request": {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer {{jwt_token}}"
-                    },
-                    {
-                        "key": "Content-Type",
-                        "value": "multipart/form-data"
-                    }
-                ],
-                "url": {
-                    "raw": "{{base_url}}/api/notifications",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "notifications"
-                    ]
-                },
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "title",
-                            "value": "Test Notification Title",
-                            "type": "text"
-                        },
-                        {
-                            "key": "message",
-                            "value": "Sample notification message",
-                            "type": "text"
-                        },
-                        {
-                            "key": "attachment",
-                            "type": "file",
-                            "src": ""
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Events - Get Events (Public)",
-            "request": {
-                "method": "GET",
-                "url": {
-                    "raw": "{{base_url}}/api/events",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "events"
-                    ]
-                }
-            }
-        },
-        {
-            "name": "Events - Create Event (Admin)",
-            "request": {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer {{jwt_token}}"
-                    },
-                    {
-                        "key": "Content-Type",
-                        "value": "multipart/form-data"
-                    }
-                ],
-                "url": {
-                    "raw": "{{base_url}}/api/events",
-                    "host": [
-                        "{{base_url}}"
-                    ],
-                    "path": [
-                        "api",
-                        "events"
-                    ]
-                },
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "title",
-                            "value": "Test Event Title",
-                            "type": "text"
-                        },
-                        {
-                            "key": "description",
-                            "value": "Test event description",
-                            "type": "text"
-                        },
-                        {
-                            "key": "file",
-                            "type": "file",
-                            "src": ""
-                        }
-                    ]
-                }
-            }
+    {
+      "name": "Auth - Get Admin Profile (Verify Token)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/auth/profile",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "profile"
+          ]
         }
-    ],
-    "variable": [
-        {
-            "key": "base_url",
-            "value": "http://localhost:8000"
-        },
-        {
-            "key": "jwt_token",
-            "value": ""
+      }
+    },
+    {
+      "name": "Circulars - Get Circulars (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/circulars",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "circulars"
+          ]
         }
-    ]
+      }
+    },
+    {
+      "name": "Circulars - Create Circular (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/circulars",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "circulars"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "title",
+              "value": "Test Circular Title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Sample circular description",
+              "type": "text"
+            },
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Notifications - Get Notifications (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notifications"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Notifications - Create Notification (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notifications"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "title",
+              "value": "Test Notification Title",
+              "type": "text"
+            },
+            {
+              "key": "message",
+              "value": "Sample notification message",
+              "type": "text"
+            },
+            {
+              "key": "attachment",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events - Get Events (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/events",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "events"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Events - Create Event (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/events",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "events"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "title",
+              "value": "Test Event Title",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Test event description",
+              "type": "text"
+            },
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://sgvns-back1.onrender.com"
+    },
+    {
+      "key": "jwt_token",
+      "value": ""
+    }
+  ]
 }
