@@ -5,5 +5,4 @@ const { verifyToken, isAdmin } = require('../middlewares/auth.middleware');
 const { addCircular } = require('../Controllers/circular.controller');
 
 router.post('/', verifyToken, isAdmin, upload.single('file'), addCircular);
-
 module.exports = router;

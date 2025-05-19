@@ -7,6 +7,8 @@ const Circular = require('../Models/circular.model');
 
 const Circular = require('../Models/circular.model');
 
+const Circular = require('../Models/circular.model');
+
 exports.addCircular = async (req, res) => {
   try {
     const { title, description, audience } = req.body;
@@ -19,8 +21,8 @@ exports.addCircular = async (req, res) => {
       title,
       description,
       audience,
-      attachmentUrl: req.file.path,
       file: req.file.originalname,
+      attachmentUrl: req.file.path,
     });
 
     await newCircular.save();
@@ -34,5 +36,6 @@ exports.addCircular = async (req, res) => {
     res.status(500).json({ error: 'Server error uploading circular' });
   }
 };
+
 
 module.exports = router;

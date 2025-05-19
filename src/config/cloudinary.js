@@ -1,8 +1,6 @@
-// config/cloudinary.js
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-require('dotenv').config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,14 +9,15 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
-    folder: 'sgvns-circulars',
-    resource_type: 'auto',
-    allowed_formats: ['pdf', 'jpg', 'jpeg', 'png'],
+    folder: 'circulars',
+    resource_type: 'raw', // Important for PDFs
+    format: async (req, file) => 'pdf', // force .pdf
+    public_id: (req, file) => file.originalname.split('.')[0],
   },
 });
 
 const upload = multer({ storage });
 
-module.exports = upload; // ✅ Export the middleware
+module.exports = upload;
