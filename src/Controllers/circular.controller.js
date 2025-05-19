@@ -1,24 +1,29 @@
 const Circular = require('../models/circular.model');
 
-// Create circular (Admin only)
-exports.createCircular = async (req, res) => {
+const createCircular = async (req, res) => {
   try {
-    const { title, description, audience } = req.body;
-    const attachmentUrl = req.file ? `uploads/${req.file.filename}` : null;
+    const { title, description, audience = 'All' } = req.body;
+    
+    const filePath = req.file ? `/uploads/${req.file.filename}` : null;
 
-    const circular = new Circular({ title, description, audience, attachmentUrl });
+    const circular = new Circular({
+      title,
+      description,
+      attachmentUrl: filePath, // ✅ saving file path here
+      audience,
+    });
+
     await circular.save();
 
     res.status(201).json({
-      success: true,
-      message: 'Circular created successfully',
-      data: circular,
+      message: 'Circular uploaded successfully',
+      circular,
     });
   } catch (error) {
-    console.error('Create Circular Error:', error.message);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
+    console.error('Error uploading circular:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+
+module.exports = { createCircular };

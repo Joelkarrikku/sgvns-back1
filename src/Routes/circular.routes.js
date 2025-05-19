@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require('../Middlewares/upload.middleware');
 const Circular = require('../models/circular.model');
 const { verifyToken, verifyRole } = require('../Middlewares/auth.middleware');
+const uploadToCloudinary = require('../utils/uploadToCloudinary'); // 👈 Import Cloudinary helper
 
 // POST route to upload a circular
 router.post(
@@ -13,16 +14,23 @@ router.post(
   async (req, res) => {
     try {
       const { title, description, audience } = req.body;
-      const fileUrl = req.file ? req.file.path : null;
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      // 👇 Upload file to Cloudinary
+      const cloudinaryUrl = await uploadToCloudinary(req.file.path, 'circulars');
 
       const newCircular = new Circular({
         title,
         description,
         audience,
-        attachmentUrl: fileUrl,  // ✅ updated key name to match schema
+        attachmentUrl: cloudinaryUrl, // 👈 Save Cloudinary URL
       });
 
       await newCircular.save();
+
       res.status(201).json({ message: 'Circular uploaded successfully', circular: newCircular });
     } catch (error) {
       res.status(500).json({ message: 'Error uploading circular', error: error.message });
