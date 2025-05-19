@@ -1,29 +1,38 @@
-const Circular = require('../models/circular.model');
+const express = require('express');
+const router = express.Router();
+const upload = require('../config/cloudinary'); // ✅ Correct path
+const { verifyToken, isAdmin } = require('../middlewares/auth.middleware');
+const Circular = require('../Models/circular.model');
+const Circular = require('../Models/circular.model');
 
-const createCircular = async (req, res) => {
+const Circular = require('../Models/circular.model');
+
+exports.addCircular = async (req, res) => {
   try {
-    const { title, description, audience = 'All' } = req.body;
-    
-    const filePath = req.file ? `/uploads/${req.file.filename}` : null;
+    const { title, description, audience } = req.body;
 
-    const circular = new Circular({
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const newCircular = new Circular({
       title,
       description,
-      attachmentUrl: filePath, // ✅ saving file path here
       audience,
+      attachmentUrl: req.file.path,
+      file: req.file.originalname,
     });
 
-    await circular.save();
+    await newCircular.save();
 
     res.status(201).json({
       message: 'Circular uploaded successfully',
-      circular,
+      circular: newCircular,
     });
-  } catch (error) {
-    console.error('Error uploading circular:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ error: 'Server error uploading circular' });
   }
 };
 
-
-module.exports = { createCircular };
+module.exports = router;

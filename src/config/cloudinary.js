@@ -1,22 +1,24 @@
-// src/config/cloudinary.js
+// config/cloudinary.js
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+require('dotenv').config();
 
-// Configure Cloudinary with environment variables
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Define storage settings
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'circulars', // You can change this folder name
-    allowed_formats: ['jpg', 'png', 'pdf', 'jpeg'],
-    resource_type: 'auto'
+    folder: 'sgvns-circulars',
+    resource_type: 'auto',
+    allowed_formats: ['pdf', 'jpg', 'jpeg', 'png'],
   },
 });
 
-module.exports = { cloudinary, storage };
+const upload = multer({ storage });
+
+module.exports = upload; // ✅ Export the middleware
