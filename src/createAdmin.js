@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('../src/models/User');
+const User = require('../src/models/User'); // Adjust the path as needed
 require('dotenv').config();
 
 async function createAdmin() {
@@ -10,7 +10,7 @@ async function createAdmin() {
 
         const existingAdmin = await User.findOne({ role: 'Admin' });
         if (existingAdmin) {
-            console.log('⚠ Admin already exists:', existingAdmin.email);
+            console.log('⚠️ Admin already exists:', existingAdmin.email);
             process.exit(0);
         }
 
@@ -24,10 +24,10 @@ async function createAdmin() {
         });
 
         await admin.save();
-        console.log('🎉 Admin user created:', admin.email);
+        console.log('🎉 Admin user created successfully:', admin.email);
         process.exit(0);
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('❌ Error creating admin:', error.message);
         process.exit(1);
     }
 }
