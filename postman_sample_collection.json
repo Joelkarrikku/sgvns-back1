@@ -18,14 +18,8 @@
         ],
         "url": {
           "raw": "{{base_url}}/api/auth/login",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "login"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "login"]
         },
         "body": {
           "mode": "raw",
@@ -45,14 +39,8 @@
         ],
         "url": {
           "raw": "{{base_url}}/api/auth/profile",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "profile"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "profile"]
         }
       }
     },
@@ -62,13 +50,8 @@
         "method": "GET",
         "url": {
           "raw": "{{base_url}}/api/circulars",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "circulars"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "circulars"]
         }
       }
     },
@@ -88,13 +71,8 @@
         ],
         "url": {
           "raw": "{{base_url}}/api/circulars",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "circulars"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "circulars"]
         },
         "body": {
           "mode": "formdata",
@@ -124,13 +102,8 @@
         "method": "GET",
         "url": {
           "raw": "{{base_url}}/api/notifications",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "notifications"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications"]
         }
       }
     },
@@ -150,13 +123,8 @@
         ],
         "url": {
           "raw": "{{base_url}}/api/notifications",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "notifications"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications"]
         },
         "body": {
           "mode": "formdata",
@@ -186,13 +154,8 @@
         "method": "GET",
         "url": {
           "raw": "{{base_url}}/api/events",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "events"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "events"]
         }
       }
     },
@@ -212,13 +175,8 @@
         ],
         "url": {
           "raw": "{{base_url}}/api/events",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "events"
-          ]
+          "host": ["{{base_url}}"],
+          "path": ["api", "events"]
         },
         "body": {
           "mode": "formdata",
