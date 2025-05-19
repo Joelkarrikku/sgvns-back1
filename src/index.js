@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-
+const circularRoutes = require('./routes/circular.route');
 // Load environment variables from .env
 dotenv.config();
 
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (for legacy access to uploaded files)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+app.use('/api/circulars', circularRoutes);
 // Health check route
 app.get('/', (req, res) => {
   res.send('✅ Backend is running!');
