@@ -23,7 +23,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"email\": \"joelsway19@gmail.com\",\n    \"password\": \"shanti123\"\n}"
+          "raw": "{\n  \"email\": \"joelsway19@gmail.com\",\n  \"password\": \"shanti123\"\n}"
         }
       }
     },
@@ -63,10 +63,6 @@
           {
             "key": "Authorization",
             "value": "Bearer {{jwt_token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "multipart/form-data"
           }
         ],
         "url": {
@@ -90,7 +86,7 @@
             {
               "key": "file",
               "type": "file",
-              "src": ""
+              "src": "sample.pdf"
             }
           ]
         }
@@ -115,10 +111,6 @@
           {
             "key": "Authorization",
             "value": "Bearer {{jwt_token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "multipart/form-data"
           }
         ],
         "url": {
@@ -142,7 +134,7 @@
             {
               "key": "attachment",
               "type": "file",
-              "src": ""
+              "src": "attachment.pdf"
             }
           ]
         }
@@ -167,10 +159,6 @@
           {
             "key": "Authorization",
             "value": "Bearer {{jwt_token}}"
-          },
-          {
-            "key": "Content-Type",
-            "value": "multipart/form-data"
           }
         ],
         "url": {
@@ -194,7 +182,7 @@
             {
               "key": "file",
               "type": "file",
-              "src": ""
+              "src": "event_image.jpg"
             }
           ]
         }

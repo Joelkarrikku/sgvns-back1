@@ -12,7 +12,12 @@ const circularSchema = new mongoose.Schema({
     publishedAt: { 
         type: Date, 
         default: Date.now 
-    }
+    },
+    file: {
+  type: String,
+  default: null,
+}
+
 });
 
 module.exports = mongoose.model('Circular', circularSchema);
