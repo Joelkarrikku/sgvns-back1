@@ -17,7 +17,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ['https://sgvns-front.netlify.app'], // Allow Netlify frontend
+    origin: ['https://sgvns-front.netlify.app', 'http://localhost:3000'], // Allow Netlify and localhost
     credentials: true // Allow cookies and authorization headers
 }));
 app.use(express.json());
