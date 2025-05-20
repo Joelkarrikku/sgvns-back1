@@ -71,7 +71,7 @@
         "body": { "mode": "formdata", "formdata": [
           { "key": "title", "value": "Test Event Title", "type": "text" },
           { "key": "description", "value": "Test event description", "type": "text" },
-          { "key": "image", "type": "file", "src": "event_image.jpg" }
+          { "key": "image", "type": "file", "src": "../my-ap/public/images/1.png" }
         ]}
       }
     }
