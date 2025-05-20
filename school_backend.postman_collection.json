@@ -10,198 +10,75 @@
       "name": "Auth - Login (Admin)",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/auth/login",
-          "host": ["{{base_url}}"],
-          "path": ["api", "auth", "login"]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"joelsway19@gmail.com\",\n  \"password\": \"shanti123\"\n}"
-        }
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api", "auth", "login"] },
+        "body": { "mode": "raw", "raw": "{ \"email\": \"joelsway19@gmail.com\", \"password\": \"shanti123\" }" }
       }
     },
     {
       "name": "Auth - Get Admin Profile (Verify Token)",
       "request": {
         "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt_token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/auth/profile",
-          "host": ["{{base_url}}"],
-          "path": ["api", "auth", "profile"]
-        }
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+        "url": { "raw": "{{base_url}}/api/auth/profile", "host": ["{{base_url}}"], "path": ["api", "auth", "profile"] }
       }
     },
     {
       "name": "Circulars - Get Circulars (Public)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/api/circulars",
-          "host": ["{{base_url}}"],
-          "path": ["api", "circulars"]
-        }
-      }
+      "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/circulars", "host": ["{{base_url}}"], "path": ["api", "circulars"] } }
     },
     {
       "name": "Circulars - Create Circular (Admin)",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt_token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/circulars",
-          "host": ["{{base_url}}"],
-          "path": ["api", "circulars"]
-        },
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "title",
-              "value": "Test Circular Title",
-              "type": "text"
-            },
-            {
-              "key": "description",
-              "value": "Sample circular description",
-              "type": "text"
-            },
-            {
-              "key": "audience",
-              "value": "All",
-              "type": "text"
-            },
-            {
-              "key": "file",
-              "type": "file",
-              "src": "sample.pdf"
-            }
-          ]
-        }
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+        "url": { "raw": "{{base_url}}/api/circulars", "host": ["{{base_url}}"], "path": ["api", "circulars"] },
+        "body": { "mode": "formdata", "formdata": [
+          { "key": "title", "value": "Test Circular Title", "type": "text" },
+          { "key": "description", "value": "Sample circular description", "type": "text" },
+          { "key": "audience", "value": "All", "type": "text" },
+          { "key": "file", "type": "file", "src": "sample.pdf" }
+        ]}
       }
     },
     {
       "name": "Notifications - Get Notifications (Public)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/api/notifications",
-          "host": ["{{base_url}}"],
-          "path": ["api", "notifications"]
-        }
-      }
+      "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/notifications", "host": ["{{base_url}}"], "path": ["api", "notifications"] } }
     },
     {
       "name": "Notifications - Create Notification (Admin)",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt_token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/notifications",
-          "host": ["{{base_url}}"],
-          "path": ["api", "notifications"]
-        },
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "title",
-              "value": "Test Notification Title",
-              "type": "text"
-            },
-            {
-              "key": "message",
-              "value": "Sample notification message",
-              "type": "text"
-            },
-            {
-              "key": "attachment",
-              "type": "file",
-              "src": "attachment.pdf"
-            }
-          ]
-        }
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+        "url": { "raw": "{{base_url}}/api/notifications/upload", "host": ["{{base_url}}"], "path": ["api", "notifications", "upload"] },
+        "body": { "mode": "formdata", "formdata": [
+          { "key": "title", "value": "Test Notification Title", "type": "text" },
+          { "key": "message", "value": "Sample notification message", "type": "text" },
+          { "key": "attachment", "type": "file", "src": "attachment.pdf" }
+        ]}
       }
     },
     {
       "name": "Events - Get Events (Public)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/api/events",
-          "host": ["{{base_url}}"],
-          "path": ["api", "events"]
-        }
-      }
+      "request": { "method": "GET", "url": { "raw": "{{base_url}}/api/events", "host": ["{{base_url}}"], "path": ["api", "events"] } }
     },
     {
       "name": "Events - Create Event (Admin)",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt_token}}"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/api/events",
-          "host": ["{{base_url}}"],
-          "path": ["api", "events"]
-        },
-        "body": {
-          "mode": "formdata",
-          "formdata": [
-            {
-              "key": "title",
-              "value": "Test Event Title",
-              "type": "text"
-            },
-            {
-              "key": "description",
-              "value": "Test event description",
-              "type": "text"
-            },
-            {
-              "key": "file",
-              "type": "file",
-              "src": "event_image.jpg"
-            }
-          ]
-        }
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+        "url": { "raw": "{{base_url}}/api/events/upload", "host": ["{{base_url}}"], "path": ["api", "events", "upload"] },
+        "body": { "mode": "formdata", "formdata": [
+          { "key": "title", "value": "Test Event Title", "type": "text" },
+          { "key": "description", "value": "Test event description", "type": "text" },
+          { "key": "image", "type": "file", "src": "event_image.jpg" }
+        ]}
       }
     }
   ],
   "variable": [
-    {
-      "key": "base_url",
-      "value": "https://sgvns-back1.onrender.com"
-    },
-    {
-      "key": "jwt_token",
-      "value": ""
-    }
+    { "key": "base_url", "value": "https://sgvns-back1.onrender.com" },
+    { "key": "base_url_local", "value": "http://localhost:8000" },
+    { "key": "jwt_token", "value": "" }
   ]
 }
