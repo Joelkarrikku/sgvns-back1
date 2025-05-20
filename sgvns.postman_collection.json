@@ -1,0 +1,141 @@
+{
+  "info": {
+    "name": "School Management Backend API",
+    "_postman_id": "school-management-backend-api",
+    "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, and Events.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"email\": \"joelsway19@gmail.com\", \"password\": \"shanti123\" }"
+        }
+      }
+    },
+    {
+      "name": "Auth - Get Admin Profile (Verify Token)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+        "url": {
+          "raw": "{{base_url}}/api/auth/profile",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "profile"]
+        }
+      }
+    },
+    {
+      "name": "Circulars - Get Circulars (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/circulars",
+          "host": ["{{base_url}}"],
+          "path": ["api", "circulars"]
+        }
+      }
+    },
+    {
+      "name": "Circulars - Create Circular (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/circulars/upload",
+          "host": ["{{base_url}}"],
+          "path": ["api", "circulars", "upload"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "title", "value": "Test Circular Title", "type": "text" },
+            { "key": "description", "value": "Sample circular description", "type": "text" },
+            { "key": "audience", "value": "All", "type": "text" },
+            { "key": "file", "type": "file", "src": "sample.pdf" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Notifications - Get Notifications (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/notifications",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications"]
+        }
+      }
+    },
+    {
+      "name": "Notifications - Create Notification (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/notifications/send",
+          "host": ["{{base_url}}"],
+          "path": ["api", "notifications", "send"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Test notification message\",\n  \"recipient\": \"All\",\n  \"type\": \"info\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Events - Get Events (Public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/events",
+          "host": ["{{base_url}}"],
+          "path": ["api", "events"]
+        }
+      }
+    },
+    {
+      "name": "Events - Create Event (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/events/upload",
+          "host": ["{{base_url}}"],
+          "path": ["api", "events", "upload"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "title", "value": "Test Event Title", "type": "text" },
+            { "key": "description", "value": "Test event description", "type": "text" },
+            { "key": "date", "value": "2025-05-30", "type": "text" },
+            { "key": "location", "value": "School Ground", "type": "text" },
+            { "key": "eventBanner", "type": "file", "src": "eventBanner.png" }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "https://sgvns-back1.onrender.com" },
+    { "key": "base_url_local", "value": "http://localhost:8000" },
+    { "key": "jwt_token", "value": "" }
+  ]
+}
