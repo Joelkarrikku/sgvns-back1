@@ -3,11 +3,14 @@ const Event = require('../models/event.model');
 // Create event (Admin only)
 const createEvent = async (req, res) => {
     try {
+        if (!req.file) return res.status(400).json({ message: "No file uploaded." });
+
         const event = new Event({
             title: req.body.title,
             description: req.body.description,
             date: req.body.date,
             location: req.body.location,
+            eventBannerUrl: req.file.path, // ✅ Stores Cloudinary file URL
         });
 
         await event.save();
@@ -16,7 +19,9 @@ const createEvent = async (req, res) => {
         res.status(500).json({ message: "Failed to create event.", error });
     }
 };
+
 module.exports = { createEvent };
+
 
 // Get all events (Public)
 exports.getEvents = async (req, res) => {
