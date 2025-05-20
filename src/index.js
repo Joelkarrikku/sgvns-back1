@@ -44,7 +44,7 @@ console.log('✅ Routes loaded: /api/auth, /api/circulars, /api/notifications, /
 
 // ✅ Connect to MongoDB
 const MONGO_URI = process.env.MONGO_URL;
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT ;
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,

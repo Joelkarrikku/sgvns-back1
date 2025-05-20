@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const Notification = require("../models/notification.model");
 const upload = require("../Middlewares/upload.middleware");
 const { verifyToken, verifyRole, isAdmin } = require("../Middlewares/auth.middleware");
-const Notification = require("../models/notification.model");
+
 
 // ✅ GET All Notifications (Public)
 router.get("/", async (req, res) => {
@@ -16,27 +17,18 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Upload New Notification (Admin Only)
-router.post("/upload", verifyToken, verifyRole("admin"), upload.single("attachment"), async (req, res) => {
+router.post("/send", verifyToken, verifyRole("admin"), async (req, res) => {
     try {
-        const { title, message } = req.body;
-
-        // Validate input
-        if (!title || !message) {
-            return res.status(400).json({ error: "Title and message are required." });
-        }
-
-        // Create new notification
         const notification = new Notification({
-            title,
-            message,
-            attachmentUrl: req.file ? `/uploads/${req.file.filename}` : null
+            message: req.body.message,
+            recipient: req.body.recipient,
+            type: req.body.type || "info",
         });
 
         await notification.save();
-        res.status(201).json({ message: "Notification uploaded successfully!", notification });
+        res.status(201).json({ message: "Notification sent successfully!", notification });
     } catch (error) {
-        console.error("Error uploading notification:", error);
-        res.status(400).json({ error: "Failed to create notification." });
+        res.status(500).json({ message: "Failed to send notification." });
     }
 });
 

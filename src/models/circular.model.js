@@ -4,7 +4,8 @@ const CircularSchema = new mongoose.Schema({
     title: String,
     description: String,
     audience: String,
-    fileUrl: String, // ✅ Store Cloudinary PDF URL here
+    fileUrl: String, // ✅ Cloudinary PDF/Image URL
+    createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Circular", CircularSchema);

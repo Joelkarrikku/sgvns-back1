@@ -1,4 +1,4 @@
-const Circular = require('../models/Circular');
+const Circular = require('../models/circular.model');
 
 const uploadCircular = async (req, res) => {
   try {

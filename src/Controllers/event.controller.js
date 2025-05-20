@@ -1,27 +1,22 @@
 const Event = require('../models/event.model');
 
 // Create event (Admin only)
-exports.createEvent = async (req, res) => {
-  try {
-    const { title, description, date } = req.body;
-    const file = req.file ? req.file.filename : null;
+const createEvent = async (req, res) => {
+    try {
+        const event = new Event({
+            title: req.body.title,
+            description: req.body.description,
+            date: req.body.date,
+            location: req.body.location,
+        });
 
-    const event = new Event({ title, description, date, file });
-    await event.save();
-
-    res.status(201).json({
-      success: true,
-      message: 'Event created successfully',
-      data: event,
-    });
-  } catch (error) {
-    console.error('Create Event Error:', error.message);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
+        await event.save();
+        res.status(201).json({ message: "Event created successfully!", event });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to create event.", error });
+    }
 };
+module.exports = { createEvent };
 
 // Get all events (Public)
 exports.getEvents = async (req, res) => {

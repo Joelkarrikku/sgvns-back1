@@ -1,17 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const notificationSchema = new mongoose.Schema({
-    title: String,
+const NotificationSchema = new mongoose.Schema({
     message: String,
-    audience: { 
-        type: String, 
-        enum: ['All', 'Students', 'Teachers', 'Parents'], 
-        default: 'All' 
-    },
-    createdAt: { 
-        type: Date, 
-        default: Date.now 
-    }
+    recipient: String, // "all" or specific user ID
+    type: { type: String, enum: ["info", "alert", "update"], default: "info" },
+    createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Notification', notificationSchema);
+module.exports = mongoose.model("Notification", NotificationSchema);

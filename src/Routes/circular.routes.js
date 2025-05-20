@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Circular = require("../models/circular.model");
 const { verifyToken, isAdmin } = require("../Middlewares/auth.middleware");
-const { upload } = require("../Middlewares/upload.middleware");
+const  upload  = require("../Middlewares/upload.middleware");
+const {uploadCircular } = require("../Controllers/circular.controller");
 
 // ✅ GET All Circulars (Public)
 router.get("/", async (req, res) => {
@@ -16,26 +17,20 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Upload New Circular (Admin Only)
-router.post("/upload", verifyToken, isAdmin, upload.single("file"), async (req, res) => {
+router.post("/upload", verifyToken, isAdmin,upload.single("file"), async (req, res) => {
     try {
-        const { title, description, audience } = req.body;
+        if (!req.file) return res.status(400).json({ message: "No file uploaded." });
 
-        if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded." });
-        }
-
-        // ✅ Store Cloudinary URL in Database
         const circular = new Circular({
-            title,
-            description,
-            audience,
-            fileUrl: req.file.path, // ✅ Cloudinary URL stored here
+            title: req.body.title,
+            description: req.body.description,
+            audience: req.body.audience,
+            fileUrl: req.file.path, // ✅ Cloudinary URL
         });
 
         await circular.save();
         res.status(201).json({ message: "Circular uploaded successfully!", circular });
     } catch (error) {
-        console.error("Error uploading circular:", error);
         res.status(500).json({ message: "Failed to create circular." });
     }
 });

@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require("../Middlewares/upload.middleware");
 const { verifyToken, verifyRole, isAdmin } = require("../Middlewares/auth.middleware");
 const Event = require("../models/event.model");
+const { createEvent } = require("../Controllers/event.controller");
 
 // ✅ GET All Events (Public)
 router.get("/", async (req, res) => {
@@ -16,27 +17,22 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Upload New Event (Admin Only)
-router.post("/upload", verifyToken, verifyRole("admin"), upload.single("image"), async (req, res) => {
+router.post("/upload", verifyToken, isAdmin, upload.single("eventBanner"), async (req, res) => {
     try {
-        const { title, description } = req.body;
+        if (!req.file) return res.status(400).json({ message: "No file uploaded." });
 
-        // Validate input
-        if (!title || !description) {
-            return res.status(400).json({ error: "Title and description are required." });
-        }
-
-        // Create new event
         const event = new Event({
-            title,
-            description,
-            imageUrl: req.file ? `/uploads/${req.file.filename}` : null,
+            title: req.body.title,
+            description: req.body.description,
+            date: req.body.date,
+            location: req.body.location,
+            eventBannerUrl: req.file.path, // ✅ Cloudinary image URL
         });
 
         await event.save();
-        res.status(201).json({ message: "Event uploaded successfully!", event });
+        res.status(201).json({ message: "Event created successfully!", event });
     } catch (error) {
-        console.error("Error creating event:", error);
-        res.status(400).json({ error: "Failed to create event." });
+        res.status(500).json({ message: "Failed to create event." });
     }
 });
 
