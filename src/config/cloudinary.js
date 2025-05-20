@@ -1,6 +1,8 @@
+// config/cloudinary.js
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
+require('dotenv').config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,8 +14,8 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'circulars',
-    resource_type: 'raw', // Important for PDFs
-    format: async (req, file) => 'pdf', // force .pdf
+    resource_type: 'raw',
+    format: async (req, file) => 'pdf',
     public_id: (req, file) => file.originalname.split('.')[0],
   },
 });

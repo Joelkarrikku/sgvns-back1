@@ -26,11 +26,14 @@ router.post(
         description,
         audience: audience || 'All',
         file: file.originalname,
-        attachmentUrl: file.path,
+        attachmentUrl: file.path, // Cloudinary URL
       });
 
       await newCircular.save();
-      res.status(201).json({ message: 'Circular created successfully', circular: newCircular });
+      res.status(201).json({
+        message: 'Circular created successfully',
+        circular: newCircular,
+      });
     } catch (error) {
       console.error('Error creating circular:', error);
       res.status(500).json({ message: 'Server Error' });
