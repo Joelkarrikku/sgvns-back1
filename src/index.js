@@ -10,6 +10,12 @@ dotenv.config();
 // Initialize express app
 const app = express();
 
+// ✅ Import Routes BEFORE using them
+const authRoutes = require('./Routes/auth.routes');
+const circularRoutes = require('./Routes/circular.routes');
+const notificationRoutes = require('./Routes/notification.routes');
+const eventRoutes = require('./Routes/event.routes');
+
 // CORS Setup: Allow Netlify and localhost
 app.use(cors({
   origin: ['https://sgvns-front.netlify.app', 'http://localhost:3000'],
@@ -20,29 +26,23 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (for legacy access to uploaded files)
+// Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api/circulars', circularRoutes);
-// Health check route
-app.get('/', (req, res) => {
-  res.send('✅ Backend is running!');
-});
 
-// Import Routes
-const authRoutes = require('./Routes/auth.routes');
-const circularRoutes = require('./Routes/circular.routes');
-const notificationRoutes = require('./Routes/notification.routes');
-const eventRoutes = require('./Routes/event.routes');
-
-// Mount Routes
+// ✅ Use Routes AFTER they are properly imported
 app.use('/api/auth', authRoutes);
 app.use('/api/circulars', circularRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/events', eventRoutes);
 
+// Health check route
+app.get('/', (req, res) => {
+  res.send('✅ Backend is running!');
+});
+
 console.log('✅ Routes loaded: /api/auth, /api/circulars, /api/notifications, /api/events');
 
-// Connect to MongoDB and start server
+// ✅ Connect to MongoDB
 const MONGO_URI = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8000;
 
