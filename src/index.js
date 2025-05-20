@@ -30,10 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ✅ Use Routes AFTER they are properly imported
-app.use('/api/auth', authRoutes);
-app.use('/api/circulars', circularRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/events', eventRoutes);
+app.use('/api/auth', require("./Routes/auth.routes"));
+app.use('/api/circulars',require("./Routes/circular.routes"));
+app.use('/api/notifications', require("./Routes/notification.routes"));
+app.use('/api/events', require("./Routes/event.routes"));
 
 // Health check route
 app.get('/', (req, res) => {
