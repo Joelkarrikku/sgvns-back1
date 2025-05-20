@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
 
-    if (!user || user.role !== 'Admin') {
+    if (!user || user.role.toLowerCase()!== 'admin') {
       return res.status(403).json({ message: 'Forbidden: Admins only' });
     }
 
