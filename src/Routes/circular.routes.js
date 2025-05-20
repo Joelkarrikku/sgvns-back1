@@ -1,23 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const Circular = require("../models/circular.model");
-const { isAdmin } = require('../Middlewares/auth.middleware'); // ✅ Ensure correct import
-const cloudinary = require("../config/cloudinary").cloudinary; // ✅ Ensure Cloudinary is properly imported
-const { upload } = require("../config/cloudinary"); // ✅ Ensure this exists
+const { verifyToken, isAdmin } = require("../Middlewares/auth.middleware");
+const { upload } = require("../Middlewares/upload.middleware");
 
-// ✅ GET Circulars (Public)
+// ✅ GET All Circulars (Public)
 router.get("/", async (req, res) => {
     try {
         const circulars = await Circular.find().sort({ createdAt: -1 });
         res.json(circulars);
-    } catch (err) {
-        console.error("Error fetching circulars:", err);
+    } catch (error) {
+        console.error("Error fetching circulars:", error);
         res.status(500).json({ message: "Failed to fetch circulars." });
     }
 });
 
-// ✅ POST Circular (Admin) - Upload PDF to Cloudinary
-router.post("/", isAdmin, upload.single("file"), async (req, res) => {
+// ✅ POST: Upload New Circular (Admin Only)
+router.post("/upload", verifyToken, isAdmin, upload.single("file"), async (req, res) => {
     try {
         const { title, description, audience } = req.body;
 
@@ -25,25 +24,35 @@ router.post("/", isAdmin, upload.single("file"), async (req, res) => {
             return res.status(400).json({ message: "No file uploaded." });
         }
 
-        // ✅ Upload PDF to Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            resource_type: "raw",
-            folder: "circulars"
-        });
-
         // ✅ Store Cloudinary URL in Database
         const circular = new Circular({
             title,
             description,
             audience,
-            fileUrl: result.secure_url, // ✅ Use Cloudinary URL
+            fileUrl: req.file.path, // ✅ Cloudinary URL stored here
         });
 
         await circular.save();
         res.status(201).json({ message: "Circular uploaded successfully!", circular });
-    } catch (err) {
-        console.error("Circular upload error:", err);
+    } catch (error) {
+        console.error("Error uploading circular:", error);
         res.status(500).json({ message: "Failed to create circular." });
+    }
+});
+
+// ✅ DELETE: Remove a Circular (Admin Only)
+router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
+    try {
+        const circular = await Circular.findById(req.params.id);
+        if (!circular) {
+            return res.status(404).json({ message: "Circular not found." });
+        }
+
+        await Circular.findByIdAndDelete(req.params.id);
+        res.json({ message: "Circular deleted successfully." });
+    } catch (error) {
+        console.error("Error deleting circular:", error);
+        res.status(500).json({ message: "Failed to delete circular." });
     }
 });
 
