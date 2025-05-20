@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../Middlewares/upload.middleware");
-const { verifyToken, verifyRole, isAdmin } = require("../Middlewares/auth.middleware");
 const Event = require("../models/event.model");
-const { createEvent } = require("../Controllers/event.controller");
+const upload = require("../Middlewares/upload.middleware");
+const { verifyToken, verifyRole } = require("../Middlewares/auth.middleware");
 
 // ✅ GET All Events (Public)
 router.get("/", async (req, res) => {
@@ -16,22 +15,31 @@ router.get("/", async (req, res) => {
     }
 });
 
-// ✅ POST: Upload New Event (Admin Only)
-router.post("/upload", verifyToken, isAdmin, upload.single("eventBanner"), async (req, res) => {
+// ✅ POST: Create New Event (Admin Only)
+router.post("/upload", verifyToken, verifyRole("admin"), upload.single("eventBanner"), async (req, res) => {
     try {
-        if (!req.file) return res.status(400).json({ message: "No file uploaded." });
+        const { title, description, date, location } = req.body;
+
+        if (!title || !date || !location) {
+            return res.status(400).json({ message: "Title, date, and location are required." });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({ message: "Event banner image is required." });
+        }
 
         const event = new Event({
-            title: req.body.title,
-            description: req.body.description,
-            date: req.body.date,
-            location: req.body.location,
-            eventBannerUrl: req.file.path, // ✅ Cloudinary image URL
+            title,
+            description,
+            date,
+            location,
+            eventBannerUrl: req.file.path, // Cloudinary path
         });
 
         await event.save();
         res.status(201).json({ message: "Event created successfully!", event });
     } catch (error) {
+        console.error("Error creating event:", error);
         res.status(500).json({ message: "Failed to create event." });
     }
 });
@@ -48,7 +56,7 @@ router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
         res.json({ message: "Event deleted successfully." });
     } catch (error) {
         console.error("Error deleting event:", error);
-        res.status(400).json({ error: "Failed to delete event." });
+        res.status(500).json({ error: "Failed to delete event." });
     }
 });
 

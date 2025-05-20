@@ -4,13 +4,13 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 
-// Load environment variables
+// 🔐 Load environment variables
 dotenv.config();
 
-// Initialize Express app
+// ✅ Initialize Express app
 const app = express();
 
-// ✅ CORS Setup: Allow Netlify and localhost
+// ✅ CORS Setup: Allow Netlify and localhost for frontend
 app.use(
   cors({
     origin: ["https://sgvns-front.netlify.app", "http://localhost:3000"],
@@ -18,35 +18,42 @@ app.use(
   })
 );
 
-// ✅ Middleware to parse JSON and URL-encoded data
+// ✅ Middleware to parse JSON and form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve static files (for uploads)
+// ✅ Serve uploaded static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ Import routes BEFORE using them
+// ✅ Route Imports
 const authRoutes = require("./Routes/auth.routes");
 const circularRoutes = require("./Routes/circular.routes");
 const notificationRoutes = require("./Routes/notification.routes");
 const eventRoutes = require("./Routes/event.routes");
 
-// ✅ Register routes
+// ✅ Register API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/circulars", circularRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/events", eventRoutes);
 
-// ✅ Health check route
+// ✅ Root Health Check
 app.get("/", (req, res) => {
-  res.send("✅ Backend is running!");
+  res.send("✅ SGVNS Backend is running smoothly!");
 });
 
-console.log(
-  "✅ Routes loaded: /api/auth, /api/circulars, /api/notifications, /api/events"
-);
+// ✅ 404 Fallback for unknown routes
+app.use((req, res) => {
+  res.status(404).json({ message: "🚫 Route not found." });
+});
 
-// ✅ Connect to MongoDB and start the server
+// ✅ Global Error Handler (optional use)
+app.use((err, req, res, next) => {
+  console.error("❌ Internal Server Error:", err);
+  res.status(500).json({ error: "Something went wrong." });
+});
+
+// ✅ MongoDB Connection and Server Start
 const MONGO_URI = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8000;
 
@@ -58,14 +65,19 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB Connected");
     app.listen(PORT, "0.0.0.0", () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log("✅ API Routes:");
+      console.log("   • /api/auth");
+      console.log("   • /api/circulars");
+      console.log("   • /api/notifications");
+      console.log("   • /api/events");
     });
   })
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
   });
 
-// ✅ Global error handling
+// ✅ Handle Uncaught Errors
 process.on("uncaughtException", (err) => {
   console.error("❌ Uncaught Exception:", err);
 });

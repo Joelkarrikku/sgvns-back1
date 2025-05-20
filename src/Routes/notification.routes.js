@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Notification = require("../models/notification.model");
-const upload = require("../Middlewares/upload.middleware");
-const { verifyToken, verifyRole, isAdmin } = require("../Middlewares/auth.middleware");
-
+const { verifyToken, verifyRole } = require("../Middlewares/auth.middleware");
 
 // ✅ GET All Notifications (Public)
 router.get("/", async (req, res) => {
@@ -12,22 +10,29 @@ router.get("/", async (req, res) => {
         res.json(notifications);
     } catch (error) {
         console.error("Error fetching notifications:", error);
-        res.status(500).json({ error: "Failed to fetch notifications" });
+        res.status(500).json({ error: "Failed to fetch notifications." });
     }
 });
 
-// ✅ POST: Upload New Notification (Admin Only)
+// ✅ POST: Send New Notification (Admin Only)
 router.post("/send", verifyToken, verifyRole("admin"), async (req, res) => {
     try {
+        const { message, recipient, type } = req.body;
+
+        if (!message || !recipient) {
+            return res.status(400).json({ message: "Message and recipient are required." });
+        }
+
         const notification = new Notification({
-            message: req.body.message,
-            recipient: req.body.recipient,
-            type: req.body.type || "info",
+            message,
+            recipient,
+            type: type || "info",
         });
 
         await notification.save();
         res.status(201).json({ message: "Notification sent successfully!", notification });
     } catch (error) {
+        console.error("Error creating notification:", error);
         res.status(500).json({ message: "Failed to send notification." });
     }
 });
@@ -44,7 +49,7 @@ router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
         res.json({ message: "Notification deleted successfully." });
     } catch (error) {
         console.error("Error deleting notification:", error);
-        res.status(400).json({ error: "Failed to delete notification." });
+        res.status(500).json({ error: "Failed to delete notification." });
     }
 });
 
