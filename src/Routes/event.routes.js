@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../Middlewares/upload.middleware');
-const { verifyToken, verifyRole } = require('../Middlewares/auth.middleware');
+const { verifyToken, isAdmin } = require('../Middlewares/auth.middleware');
 const Event = require('../models/event.model');
 
 // Public: Get all events

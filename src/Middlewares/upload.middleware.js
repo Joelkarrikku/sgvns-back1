@@ -1,7 +1,15 @@
-// src/middlewares/upload.middleware.js
 const multer = require('multer');
-const { storage } = require('../config/cloudinary'); // Cloudinary storage
+const { cloudinary } = require('../utils/cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-const upload = multer({ storage }); // Use Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'circulars',
+    allowed_formats: ['pdf'],
+  },
+});
+
+const upload = multer({ storage });
 
 module.exports = upload;
