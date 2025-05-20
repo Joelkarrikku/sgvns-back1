@@ -2,7 +2,7 @@
   "info": {
     "name": "School Management Backend API",
     "_postman_id": "school-management-backend-api",
-    "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, Events.",
+    "description": "Postman Collection for School Management Backend with Auth, Circulars, Notifications, and Events.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -32,7 +32,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
-        "url": { "raw": "{{base_url}}/api/circulars", "host": ["{{base_url}}"], "path": ["api", "circulars"] },
+        "url": { "raw": "{{base_url}}/api/circulars/upload", "host": ["{{base_url}}"], "path": ["api", "circulars", "upload"] },
         "body": { "mode": "formdata", "formdata": [
           { "key": "title", "value": "Test Circular Title", "type": "text" },
           { "key": "description", "value": "Sample circular description", "type": "text" },
@@ -67,11 +67,11 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
-        "url": { "raw": "{{base_url}}/api/events/upload", "host": ["{{base_url}}"], "path": ["api", "events", "upload"] },
+        "url": { "raw": "{{base_url}}/api/events/create", "host": ["{{base_url}}"], "path": ["api", "events", "create"] },
         "body": { "mode": "formdata", "formdata": [
           { "key": "title", "value": "Test Event Title", "type": "text" },
           { "key": "description", "value": "Test event description", "type": "text" },
-          { "key": "image", "type": "file", "src": "../my-ap/public/images/1.png" }
+          { "key": "eventBanner", "type": "file", "src": "eventBanner.png" }
         ]}
       }
     }
