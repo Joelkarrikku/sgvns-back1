@@ -23,8 +23,8 @@ app.use(cors({
 }));
 
 // Middleware to parse JSON and URL-encoded data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // ✅ Allows JSON body parsing
+app.use(express.urlencoded({ extended: true }))
 
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 console.log('✅ Routes loaded: /api/auth, /api/circulars, /api/notifications, /api/events');
-
+app.listen(8000, () => console.log("Server running on port 8000"));
 // ✅ Connect to MongoDB
 const MONGO_URI = process.env.MONGO_URL;
 const PORT = process.env.PORT ;
