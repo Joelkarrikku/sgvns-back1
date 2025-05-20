@@ -32,10 +32,10 @@ const notificationRoutes = require("./Routes/notification.routes");
 const eventRoutes = require("./Routes/event.routes");
 
 // ✅ Register API Routes
-app.use("/api/auth", require('./Routes/auth.routes'));
-app.use("/api/circulars", require('./Routes/circular.routes'));
-app.use("/api/notifications", require('./Routes/notification.routes'));
-app.use("/api/events", require('./Routes/event.routes'));
+app.use("/api/auth", authRoutes);
+app.use("/api/circulars", circularRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/events", eventRoutes);
 
 // ✅ Root Health Check
 app.get("/", (req, res) => {
