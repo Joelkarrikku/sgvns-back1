@@ -9,7 +9,7 @@ const authenticateAdmin = require('../Middlewares/admin.middleware');
 router.post(
   '/',
   verifyToken,
-  authenticateAdmin('Admin'),
+  authorizeRole('Admin'),
   upload.single('file'),
   async (req, res) => {
     try {
