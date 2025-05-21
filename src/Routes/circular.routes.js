@@ -8,8 +8,7 @@ const authenticateAdmin = require('../Middlewares/admin.middleware');
 // ✅ Create Circular - Admin only
 router.post(
   '/',
-  verifyToken,
-  authorizeRole('Admin'),
+ 
   upload.single('file'),
   async (req, res) => {
     try {
