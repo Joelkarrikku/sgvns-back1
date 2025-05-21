@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const EventSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    date: Date,
-    location: String,
-    eventBannerUrl: String, // ✅ Cloudinary Event Poster/Image
-    createdAt: { type: Date, default: Date.now },
+const eventSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  date: String,
+  location: String,
+  bannerUrl: String,
+  bannerPublicId: String
 });
 
-module.exports = mongoose.model("event", EventSchema);
+module.exports = mongoose.model("Event", eventSchema);
