@@ -31,4 +31,4 @@ const CircularSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Circular", CircularSchema);
+module.exports = mongoose.model("circular", CircularSchema);
