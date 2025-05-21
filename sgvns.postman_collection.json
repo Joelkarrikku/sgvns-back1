@@ -63,9 +63,9 @@
           { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
         ],
         "url": {
-          "raw": "{{base_url}}/api/circulars/",
+          "raw": "{{base_url}}/api/circulars/upload",
           "host": ["{{base_url}}"],
-          "path": ["api", "circulars", "/"]
+          "path": ["api", "circulars", "upload"]
         },
         "body": {
           "mode": "formdata",
@@ -73,7 +73,7 @@
             { "key": "title", "value": "Test Circular Title", "type": "text" },
             { "key": "description", "value": "Sample circular description", "type": "text" },
             { "key": "audience", "value": "All", "type": "text" },
-            { "key": "file", "type": "file", "src": "" }
+            { "key": "file", "type": "file", "src": "sample.pdf" }
           ]
         }
       }
