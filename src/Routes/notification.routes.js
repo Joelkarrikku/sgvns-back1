@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Send New Notification (Admin Only)
-router.post("/send", verifyToken, verifyRole("Admin"), async (req, res) => {
+router.post("/send", verifyToken, verifyRole("admin"), async (req, res) => {
     try {
         const { message, recipient, type } = req.body;
 
@@ -38,7 +38,7 @@ router.post("/send", verifyToken, verifyRole("Admin"), async (req, res) => {
 });
 
 // ✅ DELETE: Remove a Notification (Admin Only)
-router.delete("/:id", verifyToken, verifyRole("Admin"), async (req, res) => {
+router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
     try {
         const notification = await Notification.findById(req.params.id);
         if (!notification) {

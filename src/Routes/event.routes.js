@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Create New Event (Admin Only)
-router.post("/upload", verifyToken, verifyRole("Admin"), upload.single("eventBanner"), async (req, res) => {
+router.post("/upload", verifyToken, verifyRole("admin"), upload.single("eventBanner"), async (req, res) => {
     try {
         const { title, description, date, location } = req.body;
 
@@ -45,7 +45,7 @@ router.post("/upload", verifyToken, verifyRole("Admin"), upload.single("eventBan
 });
 
 // ✅ DELETE: Remove an Event (Admin Only)
-router.delete("/:id", verifyToken, verifyRole("Admin"), async (req, res) => {
+router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
         if (!event) {

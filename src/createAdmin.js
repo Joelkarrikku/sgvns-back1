@@ -16,14 +16,14 @@ async function createAdmin() {
 
         const hashedPassword = await bcrypt.hash('shanti123', 10);
 
-        const Admin = new User({
+        const admin = new User({
             name: 'Joel',
             email: 'joelsway19@gmail.com',
             password: hashedPassword,
             role: 'Admin'
         });
 
-        await Admin.save();
+        await admin.save();
         console.log('🎉 Admin user created:', admin.email);
         process.exit(0);
     } catch (error) {
