@@ -38,7 +38,7 @@ const authenticateAdmin = async (req, res, next) => {
         }
 
         // Attach user to request object for later use
-        req.user = user;
+        req.user = User;
 
         console.log(`✅ Admin authenticated: ${user.email}`);
 
