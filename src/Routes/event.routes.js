@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Event = require("../models/event.model");
 const upload = require("../Middlewares/upload.middleware");
-const { verifyToken, verifyRole } = require("../Middlewares/auth.middleware");
+const { verifyToken, verifyRole, authorizeRole } = require("../Middlewares/auth.middleware");
 
 // ✅ GET All Events (Public)
 router.get("/", async (req, res) => {
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Create New Event (Admin Only)
-router.post("/upload", verifyToken, verifyRole("admin"), upload.single("eventBanner"), async (req, res) => {
+router.post("/upload", verifyToken, authorizeRole("Admin"), upload.single("eventBanner"), async (req, res) => {
     try {
         const { title, description, date, location } = req.body;
 
@@ -45,7 +45,7 @@ router.post("/upload", verifyToken, verifyRole("admin"), upload.single("eventBan
 });
 
 // ✅ DELETE: Remove an Event (Admin Only)
-router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
+router.delete("/:id", verifyToken, authorizeRole("Admin"), async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
         if (!event) {

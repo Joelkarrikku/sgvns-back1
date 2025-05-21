@@ -1,73 +1,85 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Circular = require("../models/circular.model");
-const { verifyToken, isAdmin } = require("../Middlewares/auth.middleware");
-const upload = require("../Middlewares/upload.middleware");
+const Circular = require('../models/circular.model');
+const { verifyToken, authorizeRole } = require('../Middlewares/auth.middleware');
+const upload = require('../Middlewares/upload.middleware'); // multer + cloudinary
 
-// ✅ GET All Circulars (Public)
-router.get("/", async (req, res) => {
-  try {
-    const circulars = await Circular.find().sort({ createdAt: -1 });
-    res.json(circulars);
-  } catch (error) {
-    console.error("Error fetching circulars:", error);
-    res.status(500).json({ message: "Failed to fetch circulars." });
-  }
-});
-
-// ✅ POST: Upload New Circular (Admin Only)
+// ✅ Create Circular - Admin only
 router.post(
-  "/upload",
+  '/',
   verifyToken,
-  isAdmin,
-  upload.single("file"),
+  authorizeRole('Admin'),
+  upload.single('file'),
   async (req, res) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded." });
+        return res.status(400).json({ message: 'No file uploaded.' });
       }
 
       const { title, description, audience } = req.body;
 
       if (!title || !description || !audience) {
-        return res
-          .status(400)
-          .json({ message: "Title, description, and audience are required." });
+        return res.status(400).json({
+          message: 'Title, description, and audience are required.',
+        });
       }
 
       const circular = new Circular({
         title,
         description,
         audience,
-        fileUrl: req.file.path, // From Cloudinary or local
+        fileUrl: req.file.path, // Cloudinary file URL
       });
 
       await circular.save();
 
       res.status(201).json({
-        message: "Circular uploaded successfully!",
+        message: 'Circular uploaded successfully!',
         circular,
       });
     } catch (error) {
-      console.error("Error uploading circular:", error);
-      res.status(500).json({ message: "Failed to create circular." });
+      console.error('Error uploading circular:', error);
+      res.status(500).json({ message: 'Failed to create circular.' });
     }
   }
 );
 
-// ✅ DELETE: Remove a Circular (Admin Only)
-router.delete("/:id", verifyToken, isAdmin, async (req, res) => {
+// ✅ Get All Circulars - Public access or role-based if needed
+router.get('/', async (req, res) => {
+  try {
+    const circulars = await Circular.find().sort({ createdAt: -1 });
+    res.status(200).json(circulars);
+  } catch (error) {
+    console.error('Error fetching circulars:', error);
+    res.status(500).json({ message: 'Failed to fetch circulars.' });
+  }
+});
+
+// ✅ Get a Single Circular by ID
+router.get('/:id', async (req, res) => {
   try {
     const circular = await Circular.findById(req.params.id);
     if (!circular) {
-      return res.status(404).json({ message: "Circular not found." });
+      return res.status(404).json({ message: 'Circular not found.' });
     }
-
-    await Circular.findByIdAndDelete(req.params.id);
-    res.json({ message: "Circular deleted successfully." });
+    res.status(200).json(circular);
   } catch (error) {
-    console.error("Error deleting circular:", error);
-    res.status(500).json({ message: "Failed to delete circular." });
+    console.error('Error fetching circular:', error);
+    res.status(500).json({ message: 'Failed to fetch circular.' });
+  }
+});
+
+// ✅ Delete Circular - Admin only
+router.delete('/:id', verifyToken, authorizeRole('Admin'), async (req, res) => {
+  try {
+    const circular = await Circular.findByIdAndDelete(req.params.id);
+    if (!circular) {
+      return res.status(404).json({ message: 'Circular not found.' });
+    }
+    res.status(200).json({ message: 'Circular deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting circular:', error);
+    res.status(500).json({ message: 'Failed to delete circular.' });
   }
 });
 

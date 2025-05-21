@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Notification = require("../models/notification.model");
-const { verifyToken, verifyRole } = require("../Middlewares/auth.middleware");
+const { verifyToken, verifyRole, authorizeRole } = require("../Middlewares/auth.middleware");
 
 // ✅ GET All Notifications (Public)
 router.get("/", async (req, res) => {
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST: Send New Notification (Admin Only)
-router.post("/send", verifyToken, verifyRole("admin"), async (req, res) => {
+router.post("/", verifyToken, authorizeRole("Admin"), async (req, res) => {
     try {
         const { message, recipient, type } = req.body;
 
@@ -38,7 +38,7 @@ router.post("/send", verifyToken, verifyRole("admin"), async (req, res) => {
 });
 
 // ✅ DELETE: Remove a Notification (Admin Only)
-router.delete("/:id", verifyToken, verifyRole("admin"), async (req, res) => {
+router.delete("/:id", verifyToken, authorizeRole("Admin"), async (req, res) => {
     try {
         const notification = await Notification.findById(req.params.id);
         if (!notification) {

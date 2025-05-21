@@ -1,11 +1,8 @@
-// Middleware for checking user role
-exports.allowRoles = (...roles) => {
+// middleware/authorizeRole.js
+module.exports = function authorizeRole(...allowedRoles) {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        success: false,
-        message: 'Access denied: insufficient permissions',
-      });
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Access denied: Unauthorized role' });
     }
     next();
   };
