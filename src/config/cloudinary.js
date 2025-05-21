@@ -1,68 +1,53 @@
-// cloudinaryConfig.js
-require("dotenv").config(); // ✅ Load environment variables FIRST
-
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
 
-// ✅ Check Cloudinary Credentials
-const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
-
-if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
-  throw new Error("❌ Missing Cloudinary credentials in .env file or environment variables.");
+// ✅ Cloudinary Configuration (Verify Credentials)
+if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+  console.error("⚠️ Cloudinary credentials missing in environment variables!");
 }
 
-// ✅ Configure Cloudinary
 cloudinary.config({
-  cloud_name: CLOUDINARY_CLOUD_NAME,
-  api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ Verify uploader method is available
-if (typeof cloudinary.uploader.upload_stream !== "function") {
-  throw new Error("❌ cloudinary.uploader.upload_stream is undefined. Check Cloudinary setup.");
-}
-
-// ✅ Cloudinary Storage with PDF Restriction
+// ✅ Enhanced Cloudinary Storage Configuration
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
     const allowedMimeTypes = ["application/pdf"];
     if (!allowedMimeTypes.includes(file.mimetype)) {
-      throw new multer.MulterError("LIMIT_UNEXPECTED_FILE", "❌ Invalid file type. Only PDFs are allowed.");
+      throw new Error("❌ Invalid file type. Only PDFs are allowed.");
     }
 
     return {
       folder: "circulars",
-      resource_type: "raw", // Use 'raw' for non-image files like PDFs
-      format: "pdf",
-      public_id: file.originalname.replace(/\.[^/.]+$/, ""), // Remove extension
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-      transformation: [{ quality: "auto" }],
+      resource_type: "raw", // Use 'raw' for PDFs
+      format: "pdf", // Force PDF format
+      public_id: file.originalname.replace(/\.[^/.]+$/, ""), // Remove file extension for better readability
+      use_filename: true, // Retain original filename
+      unique_filename: false, // Prevent Cloudinary from altering names
+      overwrite: true, // Allow files to be updated if re-uploaded
+      transformation: [{ quality: "auto" }], // Auto-optimize quality to reduce storage usage
     };
   },
 });
 
-// ✅ Multer Upload Middleware
+// ✅ Multer Upload Middleware with File Limits
 const upload = multer({
   storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "application/pdf") {
       return cb(new Error("❌ Only PDF files are allowed."), false);
     }
     cb(null, true);
-  },
+  }
 });
 
-// ✅ Export Cloudinary and Multer
-module.exports = {
-  cloudinary,
-  storage,
-  upload,
-};
+// ✅ Export Cloudinary and Multer Configurations
+module.exports = { cloudinary, storage, upload };
