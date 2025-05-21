@@ -63,9 +63,9 @@
           { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
         ],
         "url": {
-          "raw": "{{base_url}}/api/circulars/upload",
+          "raw": "{{base_url}}/api/circulars/",
           "host": ["{{base_url}}"],
-          "path": ["api", "circulars", "upload"]
+          "path": ["api", "circulars", "/"]
         },
         "body": {
           "mode": "formdata",
