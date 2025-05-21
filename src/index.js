@@ -5,7 +5,8 @@ const dotenv = require("dotenv");
 const path = require("path");
 
 // 🔐 Load environment variables
-dotenv.config();
+require("dotenv").config();
+
 
 // ✅ Initialize Express app
 const app = express();
