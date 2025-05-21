@@ -3,12 +3,13 @@ const router = express.Router();
 const Circular = require('../models/circular.model');
 const { verifyToken, authorizeRole } = require('../Middlewares/auth.middleware');
 const upload = require('../Middlewares/upload.middleware'); // multer + cloudinary
+const authenticateAdmin = require('../Middlewares/admin.middleware');
 
 // ✅ Create Circular - Admin only
 router.post(
   '/',
   verifyToken,
-  authorizeRole('Admin'),
+  authenticateAdmin('Admin'),
   upload.single('file'),
   async (req, res) => {
     try {
