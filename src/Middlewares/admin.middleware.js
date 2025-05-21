@@ -33,7 +33,7 @@ const authenticateAdmin = async (req, res, next) => {
         }
 
         // Ensure user is an admin
-        if (!user.role || user.role.toLowerCase() !== "admin") {
+        if (!user.role || user.role.toLowerCase() !== "Admin") {
             return res.status(403).json({ message: "Forbidden: Admins only" });
         }
 
