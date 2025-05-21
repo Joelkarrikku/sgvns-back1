@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// ✅ Verify JWT Token Middleware
 const verifyToken = async (req, res, next) => {
     try {
         const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -9,28 +8,23 @@ const verifyToken = async (req, res, next) => {
             return res.status(401).json({ message: "Access denied: No token provided" });
         }
 
-        // Ensure JWT secret exists
-        if (!process.env.JWT_SECRET) {
-            console.warn("⚠️ JWT_SECRET is missing in environment variables!");
-            return res.status(500).json({ message: "Server misconfiguration: JWT secret missing" });
-        }
+        console.log("Auth Header:", req.header("Authorization")); // ✅ Log received header
 
-        // Verify Token
         let decoded;
         try {
             decoded = jwt.verify(token, process.env.JWT_SECRET);
         } catch (error) {
-            if (error.name === "TokenExpiredError") {
-                return res.status(401).json({ message: "Session expired. Please log in again." });
-            }
             return res.status(400).json({ message: "Invalid token" });
         }
 
-        // Find User
+        console.log("Decoded Token:", decoded); // ✅ Log decoded token
+
         const user = await User.findById(decoded.id);
         if (!user) {
             return res.status(401).json({ message: "User not found" });
         }
+
+        console.log("User Role:", user.role); // ✅ Log extracted role
 
         req.user = user; // Attach user to request
         next();
@@ -39,6 +33,7 @@ const verifyToken = async (req, res, next) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
 
 // ✅ Role-Based Access Control Middleware
 const verifyRole = (role) => {
