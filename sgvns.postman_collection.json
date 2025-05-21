@@ -103,7 +103,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"message\": \"Test notification message\",\n  \"recipient\": \"All\",\n  \"type\": \"info\"\n}"
+          "raw": "{\n  \"message\": \"Test notification message\",\n  \"recipient\": \"All\",\n  \"type\": \"Tommorwo is aholiday\"\n}"
         }
       }
     },
