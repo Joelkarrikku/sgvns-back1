@@ -26,7 +26,7 @@ router.post("/", verifyToken, authorizeRole("Admin"), async (req, res) => {
         const notification = new Notification({
             message,
             recipient,
-            type: type || "Tommorw is a holiday",
+            type: type || "info",
         });
 
         await notification.save();
