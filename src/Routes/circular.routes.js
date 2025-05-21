@@ -2,17 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Circular = require('../models/circular.model');
 const { verifyToken, authorizeRole } = require('../Middlewares/auth.middleware');
-const upload = require('../Middlewares/upload.middleware'); // multer + cloudinary
+const upload = require('../Middlewares/upload.middleware');
 const authenticateAdmin = require('../Middlewares/admin.middleware');
 
 // ✅ Create Circular - Admin only
 router.post(
   '/',
- 
+  verifyToken,
+  authorizeRole('Admin'),
   upload.single('file'),
   async (req, res) => {
     try {
       if (!req.file) {
+        console.error('❌ File not received from Multer/Cloudinary.');
         return res.status(400).json({ message: 'No file uploaded.' });
       }
 
@@ -28,7 +30,7 @@ router.post(
         title,
         description,
         audience,
-        fileUrl: req.file.path, // Cloudinary file URL
+        fileUrl: req.file.path, // ✅ This is the Cloudinary URL
       });
 
       await circular.save();
@@ -38,24 +40,24 @@ router.post(
         circular,
       });
     } catch (error) {
-      console.error('Error uploading circular:', error);
+      console.error('❌ Error uploading circular:', error);
       res.status(500).json({ message: 'Failed to create circular.' });
     }
   }
 );
 
-// ✅ Get All Circulars - Public access or role-based if needed
+// ✅ Get All Circulars
 router.get('/', async (req, res) => {
   try {
     const circulars = await Circular.find().sort({ createdAt: -1 });
     res.status(200).json(circulars);
   } catch (error) {
-    console.error('Error fetching circulars:', error);
+    console.error('❌ Error fetching circulars:', error);
     res.status(500).json({ message: 'Failed to fetch circulars.' });
   }
 });
 
-// ✅ Get a Single Circular by ID
+// ✅ Get Circular by ID
 router.get('/:id', async (req, res) => {
   try {
     const circular = await Circular.findById(req.params.id);
@@ -64,7 +66,7 @@ router.get('/:id', async (req, res) => {
     }
     res.status(200).json(circular);
   } catch (error) {
-    console.error('Error fetching circular:', error);
+    console.error('❌ Error fetching circular:', error);
     res.status(500).json({ message: 'Failed to fetch circular.' });
   }
 });
@@ -78,7 +80,7 @@ router.delete('/:id', verifyToken, authorizeRole('Admin'), async (req, res) => {
     }
     res.status(200).json({ message: 'Circular deleted successfully.' });
   } catch (error) {
-    console.error('Error deleting circular:', error);
+    console.error('❌ Error deleting circular:', error);
     res.status(500).json({ message: 'Failed to delete circular.' });
   }
 });

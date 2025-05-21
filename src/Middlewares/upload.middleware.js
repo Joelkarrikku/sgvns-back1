@@ -1,25 +1,19 @@
-const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("../config/cloudinary"); // ✅ Correct path
+// src/Middlewares/upload.middleware.js
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+const cloudinary = require('../config/cloudinary'); // ✅ Correct path
 
 const storage = new CloudinaryStorage({
-    cloudinary,
-    params: async (req, file) => {
-        let folderName = "default"; // ✅ Default folder
-
-        // 📌 Dynamically set folder based on route (circulars, notifications, events)
-        if (req.baseUrl.includes("/circulars")) folderName = "circulars";
-        if (req.baseUrl.includes("/notifications")) folderName = "notifications";
-        if (req.baseUrl.includes("/events")) folderName = "events";
-
-        return {
-            folder: folderName,
-            resource_type: "auto", // ✅ Allows different file types (PDF, JPG, PNG)
-            allowedFormats: ["pdf", "jpg", "png"], // ✅ Ensures Cloudinary accepts only these formats
-        };
+  cloudinary, // ✅ already v2 instance
+  params: {
+    folder: 'sgvns_uploads', // customize folder as needed
+    allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
+    public_id: (req, file) => {
+      return `${Date.now()}-${file.originalname}`; // Optional: unique name
     },
+  },
 });
 
 const upload = multer({ storage });
 
-module.exports = upload; // ✅ Exporting without `{}` to avoid destructuring issues
+module.exports = upload;
