@@ -8,15 +8,14 @@ const storage = new CloudinaryStorage({
     const isPdf = file.mimetype === "application/pdf";
     return {
       folder: "SGVNS-Docs",
-      resource_type: isPdf ? "raw" : "image",
+      resource_type: isPdf ? "raw" : "image", // 'raw' for PDFs, 'image' for JPG/PNG
       format: isPdf ? "pdf" : undefined,
       public_id: `${Date.now()}-${file.originalname.split(".")[0]}`,
-      access_mode: "public", // ✅ Ensures file is publicly accessible
+      // ❌ DO NOT set access_mode
+      // ✅ Default access is public — nothing else needed
     };
   },
 });
 
 const upload = multer({ storage });
 module.exports = upload;
-
-
